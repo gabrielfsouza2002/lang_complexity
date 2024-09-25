@@ -11,7 +11,7 @@ class Degrader:
     }
     __units = {
         "chars": U.Chars(),
-        "words": U.NotChar("\s"),
+        "words": U.NotChar(r"\s"),
         "lines": U.NotChar("\n"),
     }
 
@@ -49,7 +49,7 @@ def testeVerseRemoverN(text, seed, percent):
 texto2 = "Este é um exemplo de texto com várias palavras para remover aleatoriamente."
 def testeWordRemoverN(text, seed, percent):
     deletion_strategy = S.Deletion(percent=percent, seed=seed)
-    unit_words = U.NotChar("\s")
+    unit_words = U.NotChar(r"\s")
     word_remover = Degrader(deletion_strategy, unit_words)
     result = word_remover.degrade(text)
     #print("\n")

@@ -1,8 +1,10 @@
 import random
 
 from IPython.core.inputtransformer import assign_from_system
-from unit import ParseResult
+
 from abc import ABC, abstractmethod
+
+from unit import ParseResult  # Importação correta
 
 
 class Strategy(ABC):

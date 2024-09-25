@@ -23,7 +23,7 @@ from strategy import Sameness, Deletion, Replacement
 
 
 def build_experiment_name(path, encoding, seed, percent, runs, basefilename):
-    fname = "complexity_%s_%d_%d_%d_%s" % (encoding, seed, percent, runs, basefilename)
+    fname = "complexity_%s_%d_%d_%d_%s" % (encoding, percent, runs, seed, basefilename)
     return Path(path) / fname
 
 
@@ -92,12 +92,11 @@ def main(args):
 
     rng = random
     percent = args.percent / 100
+    print(args)
     df = sort_values(pd.read_csv(args.filename))
 
     sampler = dict(rng=rng, percent=percent)
     shuffler = dict(rng=rng)
-
-    #preresult = ParseResult(sequence=df, index = )
 
     partial_metric_ids = {
     "del-verses": partial(
