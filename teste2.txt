@@ -1,9 +1,1 @@
-
-
-Primeiro verso.
-Segundo verso.
-Terceiro verso.
-Quarto verso.
-RandomVerseRemover:
-Segundo verso.
-Terceiro verso.
+um exemplo de várias  remover aleatoriamente.

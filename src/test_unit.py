@@ -1,7 +1,5 @@
 import unittest
-from random import random
 import unit as U
-
 
 class TestUnit(unittest.TestCase):
     def test_Chars(self):

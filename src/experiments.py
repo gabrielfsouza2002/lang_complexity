@@ -4,8 +4,7 @@ import bz2
 import gzip
 
 import random
-from random import Random
-from functools import cache, partial
+from functools import partial
 from itertools import product
 from pathlib import Path
 
@@ -17,15 +16,13 @@ from code.wals import language_to_wals_code
 from compressor import Compressor
 from degrader import Degrader
 
-from metric import Metric, DegradeAndCompress
+from metric import DegradeAndCompress
 from kernels import morphological_deletion_kernel, syntactic_deletion_kernel, pragmatic_deletion_kernel, morphological_replacement_kernel
-from strategy import Sameness, Deletion, Replacement
 
 
 def build_experiment_name(path, encoding, seed, percent, runs, basefilename):
     fname = "complexity_%s_%d_%d_%d_%s" % (encoding, percent, runs, seed, basefilename)
     return Path(path) / fname
-
 
 def experiments(df, computations, runs):
     results = dict(
@@ -61,7 +58,6 @@ def experiments(df, computations, runs):
 
     return pd.DataFrame(results)
 
-
 def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -86,7 +82,6 @@ def parse_arguments():
     args = parser.parse_args()
     return args
 
-
 def main(args):
     random.seed(args.seed)
 
@@ -95,36 +90,47 @@ def main(args):
     print(args)
     df = sort_values(pd.read_csv(args.filename))
 
-    sampler = dict(rng=rng, percent=percent)
-    shuffler = dict(rng=rng)
-
     partial_metric_ids = {
     "del-verses": partial(
         DegradeAndCompress,
         degrader=Degrader.new("deletion", "lines", percent=percent),
-        kernel= pragmatic_deletion_kernel
+        kernel=pragmatic_deletion_kernel
     ),
     "del-words": partial(
         DegradeAndCompress,
         degrader=Degrader.new("deletion", "words", percent=percent),
-        kernel= syntactic_deletion_kernel
+        kernel=syntactic_deletion_kernel
     ),
     "del-chars": partial(
         DegradeAndCompress,
         degrader=Degrader.new("deletion", "chars", percent=percent),
-        kernel= morphological_deletion_kernel
+        kernel=morphological_deletion_kernel
     ),
     "rep-words": partial(
         DegradeAndCompress,
         degrader=Degrader.new("replacement", "words"),
-        kernel= morphological_replacement_kernel
+        kernel=morphological_replacement_kernel
     ),
     "do-nothing": partial(
         DegradeAndCompress,
         degrader=Degrader.new("sameness", "words"),
-        kernel= morphological_deletion_kernel
+        kernel=morphological_deletion_kernel
     ),
     }
+
+    """
+    "rep-charunic": partial(
+        DegradeAndCompress,
+        degrader=Degrader.new("random_char_replacementUnic", "chars", percent=percent),
+        kernel=morphological_deletion_kernel
+    ),
+
+    "shuf-word": partial(
+        DegradeAndCompress,
+        degrader=Degrader.new("word_shuffle", "words"),
+        kernel= ?
+    ),
+    """
 
     compression_algorithms = {
         c.name: c
@@ -156,3 +162,5 @@ def main(args):
 if __name__ == "__main__":
     args = parse_arguments()
     main(args)
+
+

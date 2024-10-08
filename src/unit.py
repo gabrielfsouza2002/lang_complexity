@@ -1,33 +1,31 @@
 import re
-from itertools import chain
 from unicodedata import category as cat
 from abc import ABC, abstractmethod
 from typing import List, NamedTuple, Optional, Set
 
-from mypy.stubgen import parse_options
+from scipy.sparse.csgraph import reconstruct_path
 
 
 class ParseResult(NamedTuple):
     sequence: List[str]
     index: Set[int]
 
-    def reconstruct(self, select: Optional[Set[int]] = None): #tirar espaços adicionais nessa função
+    def reconstruct(self, select: Optional[Set[int]] = None):
         if select is None:
             return "".join(self.sequence)
-
         sequence = (
             s
             for i, s in enumerate(self.sequence)
-            if (i in select or i not in self.index)
+            if (i in select or i+1 in select)
         )
         output = "".join(sequence)
+
         return output
 
     def iter(self):
         for i, s in enumerate(self.sequence):
             if i in self.index:
                 yield s
-
 
 
 class UnitParser(ABC):
@@ -62,3 +60,4 @@ class NotChar(UnitParser):
             seq.append(elem)
         output = ParseResult(seq, idx)
         return output
+

@@ -111,6 +111,6 @@ rng = random.Random(seed)
 percent = 0.5
 
 #print(testeVerseRemoverO(texto1,rng, percent))
-print(testeWordRemoverO(texto2, rng, percent))
+#print(testeWordRemoverO(texto2, rng, percent))
 #print(testeCharRemoverO(texto3, rng, percent))
-#print(testeWordToIndexO(texto4))
+#print(testeWordToIndexO(texto4, rng))

@@ -7,6 +7,8 @@ class Degrader:
         "deletion": S.Deletion,
         "replacement": S.Replacement,
         "sameness": S.Sameness,
+        "random_char_replacementUnic": S.RandomCharReplacementUnic,
+        "word_shuffle": S.WordShuffle,
 
     }
     __units = {
@@ -30,8 +32,8 @@ class Degrader:
         output = self.strategy.execute(presult)
         return output
 
-# TESTES COD NOVO
 
+# TESTES COD NOVO
 #TESTE 1:
 texto1 = "Primeiro verso.\nSegundo verso.\nTerceiro verso.\nQuarto verso."
 def testeVerseRemoverN(text, seed, percent):
@@ -44,9 +46,8 @@ def testeVerseRemoverN(text, seed, percent):
     #print("RandomVerseRemover:", result)
     return result
 
-
 #TESTE 2
-texto2 = "Este é um exemplo de texto com várias palavras para remover aleatoriamente."
+texto2 = "Este é um exemplo de texto com várias palavras para remover aleatoriamente. A vida é bela, só na usp que não. não aguento mais fazer tcc! acaba logo"
 def testeWordRemoverN(text, seed, percent):
     deletion_strategy = S.Deletion(percent=percent, seed=seed)
     unit_words = U.NotChar(r"\s")
@@ -58,7 +59,7 @@ def testeWordRemoverN(text, seed, percent):
     return result
 
 #TESTE 3
-texto3 = "Texto com caracteres diversos, incluindo espaços e pontuação!"
+texto3 =   "Texto   com caracteres  diversos,   incluindo   espaços e   pontuação!"
 def testeCharRemoverN(text, seed, percent):
     deletion_strategy = S.Deletion(percent=percent, seed=seed)
     unit_chars = U.Chars()
@@ -68,7 +69,6 @@ def testeCharRemoverN(text, seed, percent):
     #print(text)
     #print("RandomCharRemover:", result)
     return result
-
 
 # Teste 4: Substituição de Palavras por Índices Aleatórios
 texto4 = "Transforme cada palavra em um índice aleatório."
@@ -82,9 +82,30 @@ def testeWordToIndexN(text, seed):
     #print("RandomWordToIndex:", result)
     return result
 
-seed = 42
+# Teste 5: Substituição de Caracteres Aleatórios por Unicode
+texto5 = "Este  é   um  texto   para    testar  a   substituição    de  caracteres  por Unicode."
+def testeRandomCharReplacementUnicN(text, seed, percent):
+    random_char_replacement_strategy = S.RandomCharReplacementUnic(percent=percent, seed=seed)
+    unit_chars = U.Chars()
+    char_replacer = Degrader(random_char_replacement_strategy, unit_chars)
+    result = char_replacer.degrade(text)
+    return result
+
+# Teste 6: Embaralhamento de Palavras
+texto6 = "Vamos embaralhar todas estas palavras de forma aleatória."
+def testeWordShuffleN(text, seed):
+    word_shuffle_strategy = S.WordShuffle(seed=seed)
+    unit_words = U.NotChar(r"\s")
+    word_shuffler = Degrader(word_shuffle_strategy, unit_words)
+    result = word_shuffler.degrade(text)
+    return result
+
+
+seed = 49
 percent = 0.5
 #print(testeVerseRemoverN(texto1, seed, percent))
-#print(testeWordRemoverN(texto2, seed, percent))
+print(testeWordRemoverN(texto2, seed, percent))
 #print(testeCharRemoverN(texto3, seed, percent))
-#print(testeWordToIndexN(texto4))
+#print(testeWordToIndexN(texto4, seed))
+#print(testeRandomCharReplacementUnicN(texto5, seed, percent))
+#print(testeWordShuffleN(texto6, seed))
