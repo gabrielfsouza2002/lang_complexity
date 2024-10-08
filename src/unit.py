@@ -3,9 +3,6 @@ from unicodedata import category as cat
 from abc import ABC, abstractmethod
 from typing import List, NamedTuple, Optional, Set
 
-from scipy.sparse.csgraph import reconstruct_path
-
-
 class ParseResult(NamedTuple):
     sequence: List[str]
     index: Set[int]
@@ -13,13 +10,16 @@ class ParseResult(NamedTuple):
     def reconstruct(self, select: Optional[Set[int]] = None):
         if select is None:
             return "".join(self.sequence)
+        #print(self.sequence)
+        #print(self.index)
         sequence = (
             s
             for i, s in enumerate(self.sequence)
-            if (i in select or i+1 in select)
+            if (i in select or i not in self.index)
+            #if (i in select or i+1 in select and i not in self.index)
         )
         output = "".join(sequence)
-
+        #print(select)
         return output
 
     def iter(self):

@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 from unicodedata import category as cat
 
-from algorithm import Sampler, Shuffler, remove_join
-from text.tokenizer import tokens, lines
-from text.translit import Transliterator as Tr
+from src.algorithm import Sampler, Shuffler, remove_join
+from src.text.tokenizer import tokens, lines
+from src.text.translit import Transliterator as Tr
 
 
 class AbstractDegrader(ABC):
@@ -53,8 +53,6 @@ class DoNothing(AbstractDegrader):
 
 
 
-
-
 # TESTES
 import random
 
@@ -64,10 +62,6 @@ texto1 = "Primeiro verso.\nSegundo verso.\nTerceiro verso.\nQuarto verso."
 def testeVerseRemoverO(text, rng, percent):
     verse_remover = RandomVerseRemover(rng=rng, percent=percent)
     resultado = verse_remover.degrade(text)
-    #print("\n")
-    #print(text)
-    #print("RandomVerseRemover:")
-    #print(resultado)
     return resultado
 
 
@@ -76,9 +70,6 @@ texto2 = "Este é um exemplo de texto com várias palavras para remover aleatori
 def testeWordRemoverO(text, rng, percent):
     word_remover = RandomWordRemover(rng=rng, percent=percent)
     resultado = word_remover.degrade(text)
-    #print("\n")
-    #print(text)
-    #print("RandomWordRemover:", resultado)
     return resultado
 
 
@@ -87,9 +78,6 @@ texto3 = "Texto com caracteres diversos, incluindo espaços e pontuação!"
 def testeCharRemoverO(text, rng, percent):
     char_remover = RandomCharRemover(rng=rng, percent=percent)
     resultado = char_remover.degrade(text)
-    #print("\n")
-    #print(text)
-    #print("RandomCharRemover:", resultado)
     return resultado
 
 
@@ -101,15 +89,11 @@ def testeWordToIndexO(text, rng):
     rng = random.Random(seed)
     word_to_index = RandomWordToIndex(rng=rng)
     resultado = word_to_index.degrade(text)
-    #print("\n")
-    #print(text)
-    #print("RandomWordToIndex:", resultado)
     return resultado
 
 seed = 42
 rng = random.Random(seed)
 percent = 0.5
-
 #print(testeVerseRemoverO(texto1,rng, percent))
 #print(testeWordRemoverO(texto2, rng, percent))
 #print(testeCharRemoverO(texto3, rng, percent))

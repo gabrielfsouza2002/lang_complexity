@@ -87,8 +87,10 @@ def main(args):
 
     rng = random
     percent = args.percent / 100
-    print(args)
     df = sort_values(pd.read_csv(args.filename))
+
+    sampler = dict(rng=rng, percent=percent)
+    shuffler = dict(rng=rng)
 
     partial_metric_ids = {
     "del-verses": partial(

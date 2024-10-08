@@ -23,9 +23,7 @@ class Deletion(Strategy):
         values = list(presult.index)
         sample = set(self.rng.sample(values, k=int(len(values) * self.percent)))
         output = presult.reconstruct(select=presult.index - sample)
-
         return output
-
 
 class Replacement(Strategy):
     def __init__(self, seed=None):
@@ -61,11 +59,8 @@ class RandomCharReplacementUnic(Strategy):
         indices_to_replace = self.rng.sample(non_space_indices, num_to_replace)
 
         for idx in indices_to_replace:
-            # Gerar um caractere Unicode aleatório (excluindo emojis)
-            new_char = chr(self.rng.randint(0x0021, 0xFFFF))
-            while 0x1F600 <= ord(new_char) <= 0x1F64F:  # Excluir emojis
-                new_char = chr(self.rng.randint(0x0021, 0xFFFF))
-            chars[idx] = new_char
+
+            chars[idx] = '∑'
 
         return ''.join(chars)
 
