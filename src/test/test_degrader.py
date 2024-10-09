@@ -1,6 +1,7 @@
 import math
 import unittest
-from src.degrader import Degrader
+import re
+from test_NewDegrader import Degrader
 
 
 class testDegrader(unittest.TestCase):
@@ -113,28 +114,26 @@ class testDegrader(unittest.TestCase):
         # Verifica se a ordem das palavras é diferente (a menos que por acaso seja igual)
         self.assertNotEqual(o, s)
 
-    def test_word_shuffle_with_newlines(self):
-        s = "First line\nSecond line\nThird line"
-        d = Degrader.new("word_shuffle", "words")
+    def test_word_shuffle_with_separators_and_spaces(self):
+        s = "!Essa, string. É um exemplo de embaralhamento?! Quero que tudo esteja barulhento; mas voce... QUero que cale-se!?"
+        d = Degrader.new("word_shuffle", "words", seed=42)
         o = d.degrade(s)
 
-        # Verifica se o número de linhas não mudou
-        self.assertEqual(o.count('\n'), s.count('\n'))
+        # Verifica se os separadores e espaços estão na posição correta
+        self.assertEqual(o[0], '!')
+        self.assertIn('. ', o)  # Note o espaço após o ponto
+        self.assertEqual(o[-1], '?')
 
-        # Verifica se o número total de palavras não mudou
-        self.assertEqual(len(o.split()), len(s.split()))
+        # Verifica se todas as palavras originais estão presentes
+        original_words = set(re.findall(r'\w+', s))
+        result_words = set(re.findall(r'\w+', o))
+        self.assertEqual(original_words, result_words)
 
-        # Verifica se todas as palavras originais estão presentes no resultado
-        original_words = set(s.split())
-        result_words = set(o.split())
-        self.assertEqual(result_words, original_words)
+        # Verifica se a ordem das palavras é diferente (a menos que por acaso seja igual)
+        self.assertNotEqual(s, o)
 
-        # Verifica se a estrutura de quebras de linha foi preservada
-        self.assertEqual([len(line.split()) for line in s.split('\n')],
-                         [len(line.split()) for line in o.split('\n')])
-
-        # Verifica se pelo menos uma linha foi embaralhada
-        self.assertNotEqual(s.split('\n'), o.split('\n'))
+        # Verifica se o número de espaços é o mesmo
+        self.assertEqual(s.count(' '), o.count(' '))
 
 
 if __name__ == "__main__":

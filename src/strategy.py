@@ -1,4 +1,5 @@
 import random
+import re
 from abc import ABC, abstractmethod
 from unit import ParseResult
 
@@ -71,16 +72,29 @@ class WordShuffle(Strategy):
         self.rng = random.Random(seed)
 
     def execute(self, presult: ParseResult) -> str:
-        words = list(presult.iter())
-        self.rng.shuffle(words)
+        # Junta a sequência em uma string
+        text = ''.join(presult.sequence)
+
+        # Divide o texto em grupos usando os separadores como delimitadores, preservando espaços
+        groups = re.split(r'([!?.]\s*)', text)
 
         result = []
-        word_index = 0
-        for i, s in enumerate(presult.sequence):
-            if i in presult.index:
-                result.append(words[word_index])
-                word_index += 1
+        for group in groups:
+            if re.match(r'[!?.]\s*', group):
+                # Se o grupo é um separador (possivelmente seguido de espaços), adiciona-o diretamente
+                result.append(group)
             else:
-                result.append(s)
+                # Se não, embaralha as palavras dentro do grupo, preservando espaços no início e fim
+                leading_space = re.match(r'^\s+', group)
+                trailing_space = re.search(r'\s+$', group)
+                words = group.strip().split()
+                self.rng.shuffle(words)
+                shuffled_group = ' '.join(words)
+                if leading_space:
+                    shuffled_group = leading_space.group() + shuffled_group
+                if trailing_space:
+                    shuffled_group = shuffled_group + trailing_space.group()
+                result.append(shuffled_group)
 
+        # Junta todos os grupos
         return ''.join(result)

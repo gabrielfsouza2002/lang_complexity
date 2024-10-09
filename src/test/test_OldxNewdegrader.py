@@ -1,7 +1,7 @@
 import unittest
 
-from src.degrader import *
-from src.OldDegrader import *
+from test_NewDegrader import *
+from test_OldDegrader import *
 
 seed = 42
 rng = random.Random(seed)
