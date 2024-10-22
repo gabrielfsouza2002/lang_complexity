@@ -1,7 +1,9 @@
 import re
+from itertools import chain
 from unicodedata import category as cat
 from abc import ABC, abstractmethod
 from typing import List, NamedTuple, Optional, Set
+
 
 class ParseResult(NamedTuple):
     sequence: List[str]
@@ -10,16 +12,19 @@ class ParseResult(NamedTuple):
     def reconstruct(self, select: Optional[Set[int]] = None):
         if select is None:
             return "".join(self.sequence)
-        #print(self.sequence)
-        #print(self.index)
-        sequence = (
-            s
-            for i, s in enumerate(self.sequence)
-            if (i in select or i not in self.index)
-            #if (i in select or i+1 in select and i not in self.index)
-        )
+
+        sequence = []
+        isSeparator = True
+        for i, s in enumerate(self.sequence):
+            if i in select:
+                isSeparator = False
+                sequence.append(s)
+
+            if i not in self.index and isSeparator == False:
+                isSeparator = True
+                sequence.append(s)
+
         output = "".join(sequence)
-        #print(select)
         return output
 
     def iter(self):
@@ -41,7 +46,7 @@ class Chars(UnitParser):
         ]
         output = ParseResult(indexed_sequence, set(idx))
         return output
-    
+
 
 class NotChar(UnitParser):
     def __init__(self, char: str):
@@ -51,7 +56,7 @@ class NotChar(UnitParser):
         seq = []
         idx = set()
         for i, (fst, snd) in enumerate(
-            re.findall(r"([^%s]+)|(%s+)" % (self.char, self.char), text)
+                re.findall(r"([^%s]+)|(%s+)" % (self.char, self.char), text)
         ):
             if elem := fst:
                 idx.add(i)
@@ -60,4 +65,3 @@ class NotChar(UnitParser):
             seq.append(elem)
         output = ParseResult(seq, idx)
         return output
-

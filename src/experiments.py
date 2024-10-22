@@ -108,6 +108,11 @@ def main(args):
         degrader=Degrader.new("deletion", "chars", percent=percent),
         kernel=morphological_deletion_kernel
     ),
+    "delUni-chars": partial(
+        DegradeAndCompress,
+        degrader=Degrader.new("random_char_replacementUnic", "chars", percent=percent),
+        kernel=morphological_deletion_kernel
+    ),
     "rep-words": partial(
         DegradeAndCompress,
         degrader=Degrader.new("replacement", "words"),

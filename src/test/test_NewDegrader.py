@@ -105,5 +105,5 @@ percent = 0.5
 #print(testeCharRemoverN(texto3, seed, percent))
 #print(testeWordToIndexN(texto4, seed))
 #print(testeRandomCharReplacementUnicN(texto5, seed, percent))
-print(testeWordReplacementUnicN(texto6, seed, percent))
-#print(testeWordShuffleN(texto7, seed))
+#print(testeWordReplacementUnicN(texto6, seed, percent))
+print(testeWordShuffleN(texto7, seed))
