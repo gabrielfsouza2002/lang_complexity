@@ -7,8 +7,8 @@ class Degrader:
         "replacement": S.Replacement,
         "sameness": S.Sameness,
         "random_char_replacementUnic": S.RandomCharReplacementUnic,
+        "random_word_replacementUnic": S.RandomWordReplacementUnic,
         "word_shuffle": S.WordShuffle,
-
     }
     __units = {
         "chars": U.Chars(),
@@ -79,8 +79,17 @@ def testeRandomCharReplacementUnicN(text, seed, percent):
     result = char_replacer.degrade(text)
     return result
 
-# Teste 6: Embaralhamento de Palavras
-texto6 = "!Essa, string. É um exemplo de embaralhamento?! Quero que tudo esteja barulhento; mas voce... QUero que cale-se!"
+# Teste 6: Substituição de Palavras Aleatórias por Unicode
+texto6 = "Este é um exemplo de substituição de palavras por Unicode."
+def testeWordReplacementUnicN(text, seed, percent):
+    word_replacement_unic_strategy = S.RandomWordReplacementUnic(percent=percent, seed=seed)
+    unit_words = U.NotChar(r"\s")
+    word_replacer = Degrader(word_replacement_unic_strategy, unit_words)
+    result = word_replacer.degrade(text)
+    return result
+
+# Teste 7: Embaralhamento de Palavras
+texto7 = "!Essas, string. É um exemplo de embaralhamento?! Quero que tudo esteja barulhento; mas então voce de um jeito... Testar separadores é muito importe » pois assim faremos um bom trabalho—Pelo menos eu espero que sim. "
 def testeWordShuffleN(text, seed):
     word_shuffle_strategy = S.WordShuffle(seed=seed)
     unit_words = U.NotChar(r"\s")
@@ -89,11 +98,12 @@ def testeWordShuffleN(text, seed):
     return result
 
 
-seed = 49
-percent = 0.2
+seed = 43
+percent = 0.5
 #print(testeVerseRemoverN(texto1, seed, percent))
 #print(testeWordRemoverN(texto2, seed, percent))
 #print(testeCharRemoverN(texto3, seed, percent))
 #print(testeWordToIndexN(texto4, seed))
 #print(testeRandomCharReplacementUnicN(texto5, seed, percent))
-print(testeWordShuffleN(texto6, seed))
+print(testeWordReplacementUnicN(texto6, seed, percent))
+#print(testeWordShuffleN(texto7, seed))
