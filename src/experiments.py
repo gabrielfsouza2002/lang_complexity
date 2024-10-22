@@ -17,7 +17,8 @@ from compressor import Compressor
 from degrader import Degrader
 
 from metric import DegradeAndCompress
-from kernels import morphological_deletion_kernel, syntactic_deletion_kernel, pragmatic_deletion_kernel, morphological_replacement_kernel
+from kernels import morphological_deletion_kernel, syntactic_deletion_kernel, pragmatic_deletion_kernel, \
+    morphological_replacement_kernel, morphological_shuffler_kernel
 
 
 def build_experiment_name(path, encoding, seed, percent, runs, basefilename):
@@ -113,6 +114,11 @@ def main(args):
         degrader=Degrader.new("random_char_replacementUnic", "chars", percent=percent),
         kernel=morphological_deletion_kernel
     ),
+    "shuf-word": partial(
+        DegradeAndCompress,
+        degrader=Degrader.new("word_shuffler", "words"),
+        kernel=morphological_shuffler_kernel
+    ),
     "rep-words": partial(
         DegradeAndCompress,
         degrader=Degrader.new("replacement", "words"),
@@ -124,20 +130,6 @@ def main(args):
         kernel=morphological_deletion_kernel
     ),
     }
-
-    """
-    "rep-charunic": partial(
-        DegradeAndCompress,
-        degrader=Degrader.new("random_char_replacementUnic", "chars", percent=percent),
-        kernel=morphological_deletion_kernel
-    ),
-
-    "shuf-word": partial(
-        DegradeAndCompress,
-        degrader=Degrader.new("word_shuffle", "words"),
-        kernel= ?
-    ),
-    """
 
     compression_algorithms = {
         c.name: c

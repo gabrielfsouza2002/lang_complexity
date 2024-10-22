@@ -8,7 +8,7 @@ class Degrader:
         "sameness": S.Sameness,
         "random_char_replacementUnic": S.RandomCharReplacementUnic,
         "random_word_replacementUnic": S.RandomWordReplacementUnic,
-        "word_shuffle": S.WordShuffle,
+        "word_shuffler": S.WordShuffle,
     }
     __units = {
         "chars": U.Chars(),

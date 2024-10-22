@@ -228,6 +228,7 @@ class testDegrader(unittest.TestCase):
         s = "!Essas, string. É um exemplo de embaralhamento?! Quero que tudo esteja barulhento; mas então voce de um jeito... Testar separadores é muito importe » pois assim faremos um bom trabalho—Pelo menos eu espero que sim. "
         d = Degrader.new("word_shuffle", "words", seed=42)
         o = d.degrade(s)
+        p = 0.2
 
         # último caractere não-espaço é um separador ou uma letra
         last_non_space = o.rstrip()[-1]
