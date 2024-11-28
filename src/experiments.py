@@ -114,6 +114,11 @@ def main(args):
         degrader=Degrader.new("random_char_replacementUnic", "chars", percent=percent),
         kernel=morphological_deletion_kernel
     ),
+    "delUni-words": partial(
+        DegradeAndCompress,
+        degrader=Degrader.new("random_word_replacementUnic", "words", percent=percent),
+        kernel=syntactic_deletion_kernel
+    ),
     "shuf-word": partial(
         DegradeAndCompress,
         degrader=Degrader.new("word_shuffler", "words"),

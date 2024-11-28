@@ -99,11 +99,11 @@ def testeWordShuffleN(text, seed):
 
 
 seed = 43
-percent = 0.5
+percent = 0.3
 #print(testeVerseRemoverN(texto1, seed, percent))
 #print(testeWordRemoverN(texto2, seed, percent))
 #print(testeCharRemoverN(texto3, seed, percent))
 #print(testeWordToIndexN(texto4, seed))
 #print(testeRandomCharReplacementUnicN(texto5, seed, percent))
 #print(testeWordReplacementUnicN(texto6, seed, percent))
-print(testeWordShuffleN(texto7, seed))
+#print(testeWordShuffleN(texto7, seed))
